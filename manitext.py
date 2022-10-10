@@ -8,7 +8,8 @@ class ManiText:
     def __init__(self, languages=['en'], gpu=True):
         self.reader = easyocr.Reader(languages, gpu=gpu)
         
-    def binarizeImage(self, img):
+    @staticmethod
+    def binarizeImage(img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         binarized = cv2.adaptiveThreshold(
             gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -27,24 +28,27 @@ class ManiText:
             textBoxes.append([detection[1], box])
             
         return textBoxes
-    
-    def getBackgroundColor(self, img):
+
+    @staticmethod
+    def getBackgroundColor(img):
         img = img.reshape(-1, img.shape[-1])
         colRange = 256, 256, 256
         evalParams = {
             'a0': img[:, 0],'a1': img[:, 1],
-            'a2': img[:, 2], 's0':colRange[0],
+            'a2': img[:, 2], 's0': colRange[0],
             's1': colRange[1]}
         a1D = ne.evaluate('a0*s0*s1+a1*s0+a2', evalParams)
         arr = np.array(np.unravel_index(np.bincount(a1D).argmax(), colRange))
-        
+
         return arr.tolist()
-    
-    def drawRectangle(self, img, box, color):
+
+    @staticmethod
+    def drawRectangle(img, box, color):
         im = cv2.rectangle(img, box[0], box[1], color, -1)
         return im
     
-    def getBoxRegion(self, img, box):
+    @staticmethod
+    def getBoxRegion(img, box):
         (x1, y1), (x2, y2) = box
         h = y2 - y1
         w = x2 - x1

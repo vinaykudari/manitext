@@ -2,10 +2,10 @@ import argparse
 import cv2
 import json
 from os import walk
-import numpy as np
 
 from manitext import ManiText
 from nlp import Similarity
+
 
 class ManiTextProcessor:
     def __init__(self, dataPath, outputPath):
@@ -62,7 +62,3 @@ if __name__ == '__main__':
     
     processor = ManiTextProcessor(dataPath, outputPath)
     processor.replaceTitleBgAll()
-    
-                
-                
-    
