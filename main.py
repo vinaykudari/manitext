@@ -30,6 +30,9 @@ class ManiTextProcessor:
             imgPath = f'{dirPath}/{fileName}'
             img = cv2.imread(imgPath)
             name = fileName.split('.')[0]
+
+            if cropFooter:
+                img = img[:-100, :]
             
             if name in info:
                 try:
@@ -38,9 +41,6 @@ class ManiTextProcessor:
                         Similarity.wordMatch, 0.70)
                 except Exception as e:
                     print(f'Failed: {name}; E: {e}')
-                
-                if cropFooter:
-                    img = img[:-100, :]
                 
                 cv2.imwrite(f'{self.outputPath}/_{fileName}', img)
                 print('.', end='')
